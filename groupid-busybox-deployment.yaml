@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: groupid-busybox-deployment
+spec:
+  selector:
+    matchLabels:
+      app: groupidbusybox
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: groupidbusybox
+    spec:
+      containers:
+      - name: groupidbusybox
+        image: busybox:1.28
+        command: [ "sh", "-c", "sleep 30d" ]
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 3000
+          allowPrivilegeEscalation: false
