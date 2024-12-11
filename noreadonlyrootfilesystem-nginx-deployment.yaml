@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: rootnginx
+        app: noreadonlyrootfilesystem-nginx
     spec:
       containers:
       - name: noreadonlyrootfilesystem-nginx
