@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noreadonlyrootfilesystem-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: noreadonlyrootfilesystem-nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rootnginx
+    spec:
+      containers:
+      - name: noreadonlyrootfilesystem-nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        securityContext:
+          readOnlyRootFilesystem: false
