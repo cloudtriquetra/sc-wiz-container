@@ -5,15 +5,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: nginx
+      app: privilegednginx
   replicas: 1
   template:
     metadata:
       labels:
-        app: nginx
+        app: privilegednginx
     spec:
       containers:
-      - name: nginx
+      - name: privilegednginx
         image: nginx:1.14.2
         ports:
         - containerPort: 80
