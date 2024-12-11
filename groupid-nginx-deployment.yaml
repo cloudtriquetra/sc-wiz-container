@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: groupid-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: groupidnginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: groupidnginx
+    spec:
+      containers:
+      - name: groupidnginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        securityContext:
+          runAsGroup: 1000
+          runAsUser: 1000
