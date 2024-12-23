@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hostnetwork-nginx-deployment
+  name: hostnetwork-busybox-deployment
 spec:
   selector:
     matchLabels:
-      app: hostnetworknginx
+      app: hostnetworkbusybox
   replicas: 1
   template:
     metadata:
       labels:
-        app: hostnetworknginx
+        app: hostnetworkbusybox
     spec:
       hostNetwork: true
       containers:
-      - name: hostnetworknginx
-        image: nginx:1.14.2
+      - name: hostnetworkbusybox
+        image: busybox:1.28
+        command: ["sh", "-c", "sleep 30d"]
         ports:
         - containerPort: 8080

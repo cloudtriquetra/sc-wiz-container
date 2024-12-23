@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostipc-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: hostipcnginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hostipcnginx
+    spec:
+      hostIPC: true
+      containers:
+      - name: hostipcnginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 8081
