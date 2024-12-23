@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostpid-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: hostpidnginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hostpidnginx
+    spec:
+      hostPID: true
+      containers:
+      - name: hostpidnginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
