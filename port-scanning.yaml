@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: port-scanning-deployment
+spec:
+  selector:
+    matchLabels:
+      app: port-scanning
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: port-scanning
+    spec:
+      containers:
+      - name: port-scanning
+        image: instrumentisto/nmap
+        command: ["sh", "-c", "while true; do nmap -sS -p 1-65535 172.31.0.0/16; sleep 60; done"]
