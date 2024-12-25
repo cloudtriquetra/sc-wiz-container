@@ -15,6 +15,6 @@ spec:
       hostPID: true
       containers:
       - name: hostpidnginx
-        image: nginx:1.14.2
+        image: nginx:latest
         ports:
         - containerPort: 80

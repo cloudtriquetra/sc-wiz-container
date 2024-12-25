@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yum-package-manager-deployment
+spec:
+  selector:
+    matchLabels:
+      app: yum-package-manager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yum-package-manager
+    spec:
+      containers:
+      - name: yum-package-manager
+        image: centos:latest
+        command: ["sh", "-c", "end=$((SECONDS+2592000)); while [ $SECONDS -lt $end ]; do yum update -y; sleep 3600; done"]

@@ -1,0 +1,18 @@
+# filepath: /Users/arkaprava/wiz/sc-wiz-container/fileless.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fileless-attack-deployment
+spec:
+  selector:
+    matchLabels:
+      app: fileless-attack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fileless-attack
+    spec:
+      containers:
+      - name: fileless-attack
+        image: arkaprava/memfd-busybox
