@@ -1,2 +1,7 @@
-.cosign.*
-.public_key.*
+# Ignore cosign key files
+cosign.*
+cosign.key
+cosign.pub
+
+# Ignore public key files
+public_key.*
