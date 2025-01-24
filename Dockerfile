@@ -1,20 +1,40 @@
-FROM --platform=linux/amd64 openjdk:15-jdk-alpine
+# We need JDK as some of the lessons needs to be able to compile Java code
+FROM registry.access.redhat.com/ubi9/ubi:9.5-1732804088
 
-# Set environment variables
-ENV WEBGOAT_VERSION=8.2.0
-ENV WEBGOAT_HOME /opt/webgoat
+LABEL name="WebGoat: A deliberately insecure Web Application"
+LABEL maintainer="WebGoat team"
 
-# Create the WebGoat directory
-RUN mkdir -p ${WEBGOAT_HOME}
+RUN \
+  useradd -ms /bin/bash webgoat && \
+  chgrp -R 0 /home/webgoat && \
+  chmod -R g=u /home/webgoat
 
-# Download WebGoat
-RUN wget https://github.com/WebGoat/WebGoat/releases/download/v${WEBGOAT_VERSION}/webgoat-server-${WEBGOAT_VERSION}.jar -O ${WEBGOAT_HOME}/webgoat.jar
+USER webgoat
 
-# Expose the port WebGoat runs on
+COPY --chown=webgoat target/webgoat-*.jar /home/webgoat/webgoat.jar
+
 EXPOSE 8080
+EXPOSE 9090
 
-# Set the working directory
-WORKDIR ${WEBGOAT_HOME}
+ENV TZ=Europe/Amsterdam
 
-# Run WebGoat
-CMD ["java", "-jar", "webgoat.jar"]
+WORKDIR /home/webgoat
+ENTRYPOINT [ "java", \
+   "-Duser.home=/home/webgoat", \
+   "-Dfile.encoding=UTF-8", \
+   "--add-opens", "java.base/java.lang=ALL-UNNAMED", \
+   "--add-opens", "java.base/java.util=ALL-UNNAMED", \
+   "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED", \
+   "--add-opens", "java.base/java.text=ALL-UNNAMED", \
+   "--add-opens", "java.desktop/java.beans=ALL-UNNAMED", \
+   "--add-opens", "java.desktop/java.awt.font=ALL-UNNAMED", \
+   "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", \
+   "--add-opens", "java.base/java.io=ALL-UNNAMED", \
+   "--add-opens", "java.base/java.util=ALL-UNNAMED", \
+   "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", \
+   "--add-opens", "java.base/java.io=ALL-UNNAMED", \
+   "-Drunning.in.docker=true", \
+   "-jar", "webgoat.jar", "--server.address", "0.0.0.0" ]
+
+HEALTHCHECK --interval=5s --timeout=3s \
+  CMD curl --fail http://localhost:8080/WebGoat/actuator/health || exit 1
